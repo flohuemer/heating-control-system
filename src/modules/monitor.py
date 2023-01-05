@@ -1,5 +1,4 @@
 from os.path import exists, join
-from shared import constants
 from datetime import datetime
 from abc import abstractmethod
 from modules.logger import Logger
@@ -18,7 +17,8 @@ def update_temp(rooms: list[MonitorRoom], logger: Logger):
     for room in rooms:
         room_tag = room.get_tag()
         logger.log(f"Monitor: Reading temperature data for room {room_tag}")
-        current_temp = files.read_runtime_file(room_tag + constants.TEMP_EXT)
+        current_temp = files.read_runtime_file(
+            room_tag + files.TEMPERATURE_EXT)
         if current_temp is None:
             logger.log("Monitor: No temperature data found")
         else:
@@ -32,13 +32,12 @@ def update_temp(rooms: list[MonitorRoom], logger: Logger):
         logger.log("Monitor:")
 
 
-
 def get_requests(rooms: list[MonitorRoom], logger: Logger):
     room_requests = set()
     for room in rooms:
         room_tag = room.get_tag()
         logger.log(f"Monitor: Reading requests for room {room_tag}")
-        end_time = files.read_runtime_file(room_tag + constants.REQUEST_EXT)
+        end_time = files.read_runtime_file(room_tag + files.REQUEST_EXT)
         if end_time is None:
             logger.log("Monitor: No requests found")
             continue
