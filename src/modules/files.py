@@ -3,6 +3,8 @@ from os import mkdir
 
 RUNTIME_DIR = join(".", "runtime")
 
+TEMPERATURE_EXT = ".temp"
+REQUEST_EXT = ".req"
 
 def __get_runtime_file_path(file_name: str) -> str:
     if not exists(RUNTIME_DIR):

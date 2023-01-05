@@ -1,7 +1,6 @@
 from receive.data import ReceiveUnitConfig
 from modules import communication, files
 from modules.logger import Logger
-from shared.constants import TEMP_EXT, REQUEST_EXT
 import websockets
 import asyncio
 from datetime import datetime, timedelta
@@ -16,12 +15,12 @@ async def run(websocket):
         logger.log(f"Temp: {temp}")
         logger.log(f"Request: {request}")
         logger.log(f"Updating temperature file...")
-        files.write_runtime_file(tag + TEMP_EXT, temp)
+        files.write_runtime_file(tag + files.TEMPERATURE_EXT, temp)
         if request:
             end = datetime.now() + timedelta(hours=4)
             logger.log(f"Updating request file...")
             logger.log(f"Request will end at: {end}")
-            files.write_runtime_file(tag + REQUEST_EXT, end.timestamp())
+            files.write_runtime_file(tag + files.REQUEST_EXT, end.timestamp())
         logger.log("")
 
 
