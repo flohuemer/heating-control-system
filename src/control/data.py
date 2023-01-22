@@ -16,6 +16,7 @@ class Calendar(ConfigEntry):
 class Room(ConfigEntry, HeatingRoom, CalendarRoom, MonitorRoom):
     tag: str = None
     target_temp: float = 0.0
+    setback_temp: float = 0.0
     preheating_mins: int = 0
     control_pin: int = 0
 
@@ -25,6 +26,7 @@ class Room(ConfigEntry, HeatingRoom, CalendarRoom, MonitorRoom):
     def parse(self, config) -> None:
         self.tag = self._read_string(config, "tag")
         self.target_temp = self._read_float(config, "target_temp")
+        self.setback_temp = self._read_float(config, "setback_temp")
         self.preheating_mins = self._read_int(config, "preheating_mins")
         self.control_pin = self._read_int(config, "control_pin")
 
@@ -45,6 +47,9 @@ class Room(ConfigEntry, HeatingRoom, CalendarRoom, MonitorRoom):
 
     def get_target_temp(self) -> float:
         return self.target_temp
+
+    def get_setback_temp(self) -> float:
+        return self.setback_temp
     
     def get_target_temp_reached(self) -> bool:
         return self.target_temp_reached

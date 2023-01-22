@@ -1,6 +1,7 @@
 from time import sleep
 from sense.data import SenseUnitConfig
-from modules import io, communication
+from modules import communication
+from modules import io
 from modules.logger import Logger
 import websockets
 import asyncio
@@ -21,19 +22,19 @@ def run(config: SenseUnitConfig):
     logger.log("IO pin setup...")
     io.setup()
     logger.log(f"Input pin {config.sensor_pin} configured for sensor")
-    io.setup_intput_pin(config.sensor_pin)
-    logger.log(f"Input pin {config.button_pin} configured for button")
-    io.setup_intput_pin(config.button_pin)
+    io.setup_input_pin(config.sensor_pin)
+    logger.log(f"Input pull up pin {config.button_pin} configured for button")
+    io.setup_pull_up_pin(config.button_pin)
     logger.log(f"Update interval set to {config.update_interval} seconds")
     interval_steps = config.update_interval // SLEEP_TIME
     i = 0
     logger.log("")
     while True:
         try:
-            request = io.is_high(config.button_pin)
+            request = io.is_low(config.button_pin)
             if request or i == 0:
                 logger.log("Update requested")
-                temp = io.get_DHT22_data(config.sensor_pin)
+                temp = io.get_DHT22_temp(config.sensor_pin)
                 logger.log(f"Button state is: {request} and temp is: {temp}")
                 logger.log(f"Sending data to {config.uri} for tag {config.tag}")
                 data = communication.encode_data(config.tag, temp, request)

@@ -1,6 +1,6 @@
 from time import sleep
 from control.data import ControlUnitConfig
-from modules import monitor, heating, calendar, io
+from modules import monitor, heating, calendar
 from modules.logger import Logger
 import sys
 
@@ -28,7 +28,7 @@ def run(config: ControlUnitConfig):
             logger.warn("User interrupted system")
             break
     logger.log("Clean up system")
-    io.cleanup()
+    heating.cleanup(logger)
 
 
 def main(argv):

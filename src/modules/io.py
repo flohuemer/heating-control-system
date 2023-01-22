@@ -1,28 +1,47 @@
-import random
+import RPi.GPIO as GPIO
+import Adafruit_DHT
 
 
 def cleanup():
-    print("Clean up pins")
+    GPIO.cleanup()
 
 
 def setup():
-    pass
+    GPIO.setmode(GPIO.BCM)
 
 
 def setup_output_pin(pin: int):
-    print(f"Set pin {pin} to output")
+    GPIO.setup(pin, GPIO.OUT)
 
 
-def setup_intput_pin(pin: int):
-    print(f"Set pin {pin} to input")
+def setup_input_pin(pin: int):
+    GPIO.setup(pin, GPIO.IN)
+
+
+def setup_pull_up_pin(pin: int):
+    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+
+def setup_pull_down_pin(pin: int):
+    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+def set_high(pin: int):
+    GPIO.output(pin, GPIO.HIGH)
+
+
+def set_low(pin: int):
+    GPIO.output(pin, GPIO.LOW)
 
 
 def is_high(pin: int):
-    return random.random() == 0.0
+    return GPIO.input(pin) == GPIO.HIGH
 
 
 def is_low(pin: int):
-    return not is_high(pin)
+    return GPIO.input(pin) == GPIO.LOW
 
-def get_DHT22_data(pin: int):
-    return random.uniform(19, 21.2)
+
+def get_DHT22_temp(pin: int):
+    _, temp = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
+    return temp
